@@ -3,6 +3,7 @@ package model;
 import model.SubTask;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Task {
     protected String title;
@@ -14,6 +15,19 @@ public class Task {
     public Task(String title) {
         this.title = title;
         this.status = "NEW";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id && epicId == task.epicId && Objects.equals(title, task.title) && Objects.equals(status, task.status) && Objects.equals(description, task.description) && Objects.equals(subTasks, task.subTasks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, id, status, description, epicId, subTasks);
     }
 
     public String getTitle() {
