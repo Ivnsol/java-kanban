@@ -1,3 +1,9 @@
+package manager;
+
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -5,9 +11,9 @@ import java.util.HashMap;
 
 
 public class ManagerTask {
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    HashMap<Integer, Task> tasks = new HashMap<>();
+    private HashMap<Integer, Epic> epics = new HashMap<>();
+    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private HashMap<Integer, Task> tasks = new HashMap<>();
     public int nextId = 1;
 
     // Метод получения списка всех задач для определенных эпиков
