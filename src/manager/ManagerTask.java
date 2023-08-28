@@ -14,7 +14,7 @@ public class ManagerTask {
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, SubTask> subTasks = new HashMap<>();
     private HashMap<Integer, Task> tasks = new HashMap<>();
-    public int nextId = 1;
+    private int nextId = 1;
 
     // Метод получения списка всех задач для определенных эпиков
     public ArrayList<Task> getAllTasksForEpic(Epic epic) {
