@@ -1,3 +1,7 @@
+package model;
+
+import model.SubTask;
+
 import java.util.ArrayList;
 
 public class Task {
