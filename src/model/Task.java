@@ -10,11 +10,12 @@ public class Task {
     protected int id;
     protected String status;
     protected String description;
-    protected int epicId;
+
     protected ArrayList<SubTask> subTasks = new ArrayList<>();
-    public Task(String title) {
+    public Task(String title, String description) {
         this.title = title;
         this.status = "NEW";
+        this.description = description;
     }
 
     @Override
@@ -22,12 +23,12 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && epicId == task.epicId && Objects.equals(title, task.title) && Objects.equals(status, task.status) && Objects.equals(description, task.description) && Objects.equals(subTasks, task.subTasks);
+        return id == task.id  && Objects.equals(title, task.title) && Objects.equals(status, task.status)  && Objects.equals(subTasks, task.subTasks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, id, status, description, epicId, subTasks);
+        return Objects.hash(title, id, status, description);
     }
 
     public String getTitle() {
@@ -54,9 +55,6 @@ public class Task {
         this.status = status;
     }
 
-    public int getEpicId() {
-        return epicId;
-    }
 
     public void setSubTasks(ArrayList<SubTask> subTasks) {
         this.subTasks = subTasks;
@@ -69,9 +67,6 @@ public class Task {
         subTasks.add(subTask);
     }
 
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
-    }
 
     public String getDescription() {
         return description;

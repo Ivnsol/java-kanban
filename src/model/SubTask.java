@@ -3,10 +3,11 @@ package model;
 import java.util.Objects;
 
 public class SubTask extends Task {
-    protected int taskId;
+    protected int epicId;
 
-    public SubTask(String title) {
-        super(title);
+    public SubTask(String title, String description, int epicId) {
+        super(title,
+                description);
     }
 
     @Override
@@ -15,19 +16,19 @@ public class SubTask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SubTask subTask = (SubTask) o;
-        return taskId == subTask.taskId;
+        return epicId == subTask.epicId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), taskId);
+        return Objects.hash(super.hashCode(), epicId);
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getEpicId() {
+        return epicId;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 }
