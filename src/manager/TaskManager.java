@@ -8,10 +8,6 @@ import java.util.*;
 
 
 interface TaskManager {
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    HashMap<Integer, Task> tasks = new HashMap<>();
-
 
     // Метод получения списка всех задач для эпика
       void getAllEpic();
@@ -57,7 +53,7 @@ interface TaskManager {
     void addTask(Task task);
 
     // Метод обновления эпика по идентификатору
-    void updateEpic(Epic epic);
+    void updateEpic(Epic epic, int id);
 
     // Метод обновления обычной задачи по идентификатору
     void updateTask(Task task, int id);
