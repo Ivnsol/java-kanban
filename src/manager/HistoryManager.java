@@ -2,11 +2,11 @@ package manager;
 
 import model.Task;
 
-public interface HistoryManager {
+import java.util.LinkedList;
 
-    int HISTORY_SIZE = 10;
+public interface HistoryManager {
 
     void add(Task task);
 
-    void getHistory();
+    LinkedList<Task> getHistory();
 }

@@ -10,16 +10,16 @@ import java.util.*;
 interface TaskManager {
 
     // Метод получения списка всех задач для эпика
-      void getAllEpic();
+      List<Epic> getAllEpic();
 
 
 
     // Метод получения списка всех задач для обычных задач
-     void getAllTask();
+     ArrayList<Task> getAllTask();
 
 
     // Метод получения списка всех задач для подзадач
-     void getAllSubTask();
+     ArrayList<SubTask> getAllSubTask();
 
 
 

@@ -40,7 +40,7 @@ public class Main {
 
                 case 3:
                     System.out.println("Введите номер эпика для добавления подзадачи");
-                    inMemoryTaskManager.getAllEpic();
+                    inMemoryTaskManager.printEpicTask();
                     int epicId = scanner.nextInt();
                     System.out.println("Введите название подзадачи");
                     String subTaskName = scanner.next();

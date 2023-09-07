@@ -1,14 +1,21 @@
 package manager;
 
 public class Managers {
-    public Managers() {
+    private TaskManager taskManager;
+    private HistoryManager historyManager;
+
+    public Managers(TaskManager taskManager, HistoryManager historyManager) {
+        this.taskManager = taskManager;
+        this.historyManager = historyManager;
     }
 
-    public static TaskManager getDefault(){
-        return new <TaskManager> InMemoryTaskManager();
+    public static Managers getDefault() {
+        TaskManager taskManager = new InMemoryTaskManager();
+        HistoryManager historyManager = new InMemoryHistoryManager();
+        return new Managers(taskManager, historyManager);
     }
 
-    public static HistoryManager getDefaultHistory(){
-        return new <HistoryManager> InMemoryHistoryManager();
+    public static HistoryManager getDefaultHistory() {
+        return new InMemoryHistoryManager();
     }
 }
