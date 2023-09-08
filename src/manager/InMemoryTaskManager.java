@@ -9,16 +9,25 @@ import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    private HashMap<Integer, Task> tasks = new HashMap<>();
+    private Map<Integer, Epic> epics;
+    private Map<Integer, SubTask> subTasks;
+    private Map<Integer, Task> tasks;
+    private HistoryManager historyManager;
+    private int nextEpicId;
+    private int nextTaskId;
+    private int nextSubtaskId;
 
-    private final HistoryManager historyManager = Managers.getDefaultHistory();;
-    private int nextEpicId = 1;
-    private int nextTaskId = 1;
-    private int nextSubtaskId = 1;
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+        this.epics = new HashMap<>();
+        this.subTasks = new HashMap<>();
+        this.tasks = new HashMap<>();
+        this.nextEpicId = 1;
+        this.nextTaskId = 1;
+        this.nextSubtaskId = 1;
+    }
 
-    public void printEpicTask() {
+    public void printEpicTask() { //метод для вывода всех задач для эпика в консоль
     for (Map.Entry<Integer, Epic> entry : epics.entrySet()) {
         Integer key = entry.getKey();
         Epic epic = entry.getValue();
@@ -27,20 +36,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
     @Override
     // Метод получения списка всех задач для эпика
-        public ArrayList<Epic> getAllEpic() {
+        public Collection<Epic> getAllEpic() {
         return new ArrayList<>(epics.values());
     }
 
 
     @Override
     // Метод получения списка всех задач для обычных задач
-    public ArrayList<Task> getAllTask() {
+    public Collection<Task> getAllTask() {
         return new ArrayList<>(tasks.values());
     }
 
     @Override
     // Метод получения списка всех задач для подзадач
-    public ArrayList<SubTask> getAllSubTask() {
+    public Collection<SubTask> getAllSubTask() {
         return new ArrayList<>(subTasks.values());
         }
 
@@ -68,22 +77,22 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     // Метод получения задачи по идентификатору для эпика
     public void getTaskByIdForEpic(int epicIds) {
-        epics.get(epicIds);
-        historyManager.add(epics.get(epicIds));
+        Epic epic = epics.get(epicIds);
+        //historyManager.add(epic); я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
     // Метод получения задачи по идентификатору для обычных задач
     public void getTaskByIdForTask(int taskId) {
-        tasks.get(taskId);
-        historyManager.add(tasks.get(taskId));
+        Task task = tasks.get(taskId);
+        //historyManager.add(task); я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
     // Метод получения задачи по идентификатору для подзадач
     public void getTaskByIdForSubTask(int subTaskId) {
-        subTasks.get(subTaskId);
-        historyManager.add(subTasks.get(subTaskId));
+        SubTask subTask = subTasks.get(subTaskId);
+        //historyManager.add(subTask); я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
@@ -169,9 +178,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public void getHistory(){
-        historyManager.getHistory();
-    }
+    /*public LinkedList<Task> getHistory(){
+        return historyManager.getHistory();
+    }*/
 }
 
 

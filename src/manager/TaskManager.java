@@ -7,19 +7,19 @@ import model.Task;
 import java.util.*;
 
 
-interface TaskManager {
+public interface TaskManager {
 
     // Метод получения списка всех задач для эпика
-      List<Epic> getAllEpic();
+      Collection<Epic> getAllEpic();
 
 
 
     // Метод получения списка всех задач для обычных задач
-     ArrayList<Task> getAllTask();
+     Collection<Task> getAllTask();
 
 
     // Метод получения списка всех задач для подзадач
-     ArrayList<SubTask> getAllSubTask();
+     Collection<SubTask> getAllSubTask();
 
 
 
@@ -66,6 +66,7 @@ interface TaskManager {
     // Получение списка задач для определенного эпика
     void getTasksForEpic(int epicId);
 
+    void printEpicTask();
 }
 
 
