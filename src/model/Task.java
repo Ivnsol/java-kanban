@@ -76,4 +76,10 @@ public class Task {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }

@@ -67,6 +67,8 @@ public interface TaskManager {
     void getTasksForEpic(int epicId);
 
     void printEpicTask();
+
+    LinkedList<Task> printHistory();
 }
 
 

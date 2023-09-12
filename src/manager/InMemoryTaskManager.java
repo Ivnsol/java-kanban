@@ -12,7 +12,7 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Epic> epics;
     private Map<Integer, SubTask> subTasks;
     private Map<Integer, Task> tasks;
-    private HistoryManager historyManager;
+    private final HistoryManager historyManager;
     private int nextEpicId;
     private int nextTaskId;
     private int nextSubtaskId;
@@ -78,21 +78,21 @@ public class InMemoryTaskManager implements TaskManager {
     // Метод получения задачи по идентификатору для эпика
     public void getTaskByIdForEpic(int epicIds) {
         Epic epic = epics.get(epicIds);
-        //historyManager.add(epic); я так понял переносим это в меин? данный менеджер больше не занимается историей
+        historyManager.add(epic); //я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
     // Метод получения задачи по идентификатору для обычных задач
     public void getTaskByIdForTask(int taskId) {
         Task task = tasks.get(taskId);
-        //historyManager.add(task); я так понял переносим это в меин? данный менеджер больше не занимается историей
+        historyManager.add(task); //я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
     // Метод получения задачи по идентификатору для подзадач
     public void getTaskByIdForSubTask(int subTaskId) {
         SubTask subTask = subTasks.get(subTaskId);
-        //historyManager.add(subTask); я так понял переносим это в меин? данный менеджер больше не занимается историей
+        historyManager.add(subTask); //я так понял переносим это в меин? данный менеджер больше не занимается историей
     }
 
     @Override
@@ -178,9 +178,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    /*public LinkedList<Task> getHistory(){
+    @Override
+    public LinkedList<Task> printHistory(){
         return historyManager.getHistory();
-    }*/
+    }
 }
 
 
