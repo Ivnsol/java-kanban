@@ -34,6 +34,12 @@ public interface TaskManager {
     void removeAllSubTask(SubTask subTask);
 
 
+    void removeEpicById(int epicIds);
+
+    void removeTaskById(int taskId);
+
+    void removeSubtaskId(int subTaskId);
+
     // Метод получения задачи по идентификатору для эпика
     void getTaskByIdForEpic(int epicIds);
 
@@ -61,14 +67,12 @@ public interface TaskManager {
     // Метод обновления подзадачи по идентификатору
     void updateSubTask(SubTask subTask, int id);
 
-
-
     // Получение списка задач для определенного эпика
     void getTasksForEpic(int epicId);
 
     void printEpicTask();
 
-    LinkedList<Task> printHistory();
+    ArrayList<Task> printHistory();
 }
 
 
