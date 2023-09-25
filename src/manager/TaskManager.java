@@ -59,7 +59,7 @@ public interface TaskManager {
     void addTask(Task task);
 
     // Метод обновления эпика по идентификатору
-    void updateEpic(Epic epic, int id);
+    void updateEpic(Epic epic);
 
     // Метод обновления обычной задачи по идентификатору
     void updateTask(Task task, int id);

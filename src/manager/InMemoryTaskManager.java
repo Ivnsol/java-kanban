@@ -69,7 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeAllSubTask(SubTask subTask) {
         subTasks.clear();
         Epic epic = epics.get(subTask.getEpicId());
-        updateEpic(epic, subTask.getEpicId());
+        updateEpic(epic);
     }
 
     @Override
@@ -91,11 +91,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeSubtaskId(int subTaskId){
-        subTasks.remove(subTaskId);
-        Epic ep = epics.get(subTaskId);
-        ep.getSubTasksIds().remove(subTaskId);
-        updateEpic(ep, subTaskId);
+        Epic ep = epics.get(subTasks.get(subTaskId).getEpicId());
+        ep.getSubTasksIds().remove(Integer.valueOf(subTaskId));
         historyManager.remove(subTaskId);
+        subTasks.remove(subTaskId);
+        updateEpic(ep);
     }
 
 
@@ -135,7 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
         epic.setSubTasksIds(subTask.getId());
-        updateEpic(epic, subTask.getEpicId());
+        updateEpic(epic);
         nextId++;
     }
 
@@ -149,8 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     // Метод обновления эпика по идентификатору
-    public void updateEpic(Epic epic, int id) {
-        epics.put(epic.getId(), epic);
+    public void updateEpic(Epic epic) {
         if (!epic.getStatus().equals("DONE")) {
             for (Integer subTasksId : epic.getSubTasksIds()) {
                 SubTask subTask = subTasks.get(subTasksId);
@@ -162,7 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
         }
-        tasks.put(epic.getId(), epic);
+        epics.put(epic.getId(), epic);
     }
 
     @Override
@@ -178,7 +177,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTask.setId(id);
         subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
-        updateEpic(epic, subTask.getEpicId());
+        updateEpic(epic);
         /* вариант обновления №2, но поскольку для эпика есть отдельный метод, прописал отдельно
         for (Map.Entry<Integer, SubTask> entry : subTasks.entrySet()) {
             SubTask subTaskStatus = entry.getValue();
