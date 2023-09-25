@@ -1,6 +1,5 @@
 package manager;
 
-import Node.Node;
 import model.Task;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private final CustomLinkedLists history = new CustomLinkedLists();
 
-    //private static final int HISTORY_SIZE = 10;
 
     @Override
     public void add(Task task) {
@@ -38,7 +36,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         protected Node last;
         protected Node first;
         protected HashMap<Integer, Node> nodeHistory = new HashMap<>();
-
         protected CustomLinkedLists() {
             last = null;
             first = null;
@@ -77,7 +74,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             nodeHistory.put(task.getId(), newNode);
         }
 
-
         protected List<Task> getTasks() {
             List<Task> tasks = new ArrayList<>();
             Node node = first;
@@ -86,6 +82,42 @@ public class InMemoryHistoryManager implements HistoryManager {
                 node = node.getNext();
             }
             return tasks;
+        }
+
+        public static class Node {
+            private Task item;
+            private Node next;
+            private Node prev;
+
+            public Node(Node prev, Task element, Node next) {
+                this.item = element;
+                this.next = next;
+                this.prev = prev;
+            }
+
+            public Task getItem() {
+                return item;
+            }
+
+            public void setItem(Task item) {
+                this.item = item;
+            }
+
+            public Node getNext() {
+                return next;
+            }
+
+            public void setNext(Node next) {
+                this.next = next;
+            }
+
+            public Node getPrev() {
+                return prev;
+            }
+
+            public void setPrev(Node prev) {
+                this.prev = prev;
+            }
         }
     }
 }
