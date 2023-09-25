@@ -203,7 +203,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> printHistory(){
+    public List<Task> printHistory(){
         return historyManager.getHistory();
     }
 }

@@ -72,7 +72,7 @@ public interface TaskManager {
 
     void printEpicTask();
 
-    ArrayList<Task> printHistory();
+    List<Task> printHistory();
 }
 
 
