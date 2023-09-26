@@ -36,6 +36,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         protected Node last;
         protected Node first;
         protected HashMap<Integer, Node> nodeHistory = new HashMap<>();
+
         protected CustomLinkedLists() {
             last = null;
             first = null;
@@ -59,11 +60,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         protected void linkLast(Task task) {
-            Node l = last;
-            final Node newNode = new Node(l, task, null);
             if (nodeHistory.containsKey(task.getId())) {
                 removeNode(nodeHistory.get(task.getId()));
             }
+            Node l = last;
+            final Node newNode = new Node(l, task, null);
             last = newNode;
             if (l == null) {
                 first = newNode;
@@ -72,6 +73,7 @@ public class InMemoryHistoryManager implements HistoryManager {
                 newNode.setPrev(l);
             }
             nodeHistory.put(task.getId(), newNode);
+
         }
 
         protected List<Task> getTasks() {
