@@ -1,7 +1,5 @@
 package model;
 
-import model.SubTask;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -10,8 +8,7 @@ public class Task {
     protected int id;
     protected String status;
     protected String description;
-
-    protected ArrayList<SubTask> subTasks = new ArrayList<>();
+    
     public Task(String title, String description) {
         this.title = title;
         this.status = "NEW";
@@ -54,19 +51,6 @@ public class Task {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
-    public void setSubTasks(ArrayList<SubTask> subTasks) {
-        this.subTasks = subTasks;
-    }
-
-    public ArrayList<SubTask> getSubTasks() {
-        return subTasks;
-    }
-    public void addSubTask(SubTask subTask) {
-        subTasks.add(subTask);
-    }
-
 
     public String getDescription() {
         return description;
