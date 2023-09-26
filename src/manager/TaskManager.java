@@ -4,35 +4,34 @@ import model.Epic;
 import model.SubTask;
 import model.Task;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 
 public interface TaskManager {
 
     // Метод получения списка всех задач для эпика
-      Collection<Epic> getAllEpic();
-
+    Collection<Epic> getAllEpic();
 
 
     // Метод получения списка всех задач для обычных задач
-     Collection<Task> getAllTask();
+    Collection<Task> getAllTask();
 
 
     // Метод получения списка всех задач для подзадач
-     Collection<SubTask> getAllSubTask();
-
-
+    Collection<SubTask> getAllSubTask();
 
 
     // Метод удаления всех задач для эпика
-    void removeAllTasksForEpic(Epic epic);
+    void removeAllTasksForEpic();
+
 
     // Метод удаления всех задач для обычных задач
-    void removeAllTask(Task task);
+    void removeAllTask();
+
 
     // Метод удаления всех задач для подзадач
-    void removeAllSubTask(SubTask subTask);
-
+    void removeAllSubTask();
 
     void removeEpicById(int epicIds);
 
@@ -41,13 +40,13 @@ public interface TaskManager {
     void removeSubtaskId(int subTaskId);
 
     // Метод получения задачи по идентификатору для эпика
-    void getTaskByIdForEpic(int epicIds);
+    Task getTaskByIdForEpic(int epicIds);
 
     // Метод получения задачи по идентификатору для обычных задач
-    void getTaskByIdForTask(int taskId);
+    Task getTaskByIdForTask(int taskId);
 
     // Метод получения задачи по идентификатору для подзадач
-    void getTaskByIdForSubTask(int subTaskId);
+    Task getTaskByIdForSubTask(int subTaskId);
 
     // Метод создания эпика
     void addEpic(Epic epic);
@@ -58,8 +57,9 @@ public interface TaskManager {
     // Метод добавления задачи
     void addTask(Task task);
 
+
     // Метод обновления эпика по идентификатору
-    void updateEpic(Epic epic);
+    void updateEpic(Epic epic, int id);
 
     // Метод обновления обычной задачи по идентификатору
     void updateTask(Task task, int id);
