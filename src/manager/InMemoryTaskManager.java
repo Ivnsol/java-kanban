@@ -96,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
         ep.deleteSubTasksFromEpic(subTaskId);
         historyManager.remove(subTaskId);
         subTasks.remove(subTaskId);
-        updateEpic(ep, ep.getId());
+        updateEpic(ep);
     }
 
 
@@ -139,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
         subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
         epic.setSubTasksIds(subTask.getId());
-        updateEpic(epic, epic.getId());
+        updateEpic(epic);
         nextId++;
     }
 
@@ -153,7 +153,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     // Метод обновления эпика по идентификатору
-    public void updateEpic(Epic epic, int id) {
+    public void updateEpic(Epic epic) {
         if (!epic.getStatus().equals(Status.DONE)) {
             boolean allSubtasksDone = true;
             for (Integer subTasksId : epic.getSubTasksIds()) {
@@ -169,33 +169,23 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.setStatus("IN_PROGRESS");
             }
         }
-        epics.put(id, epic);
+        epics.put(epic.getId(), epic);
     }
 
     @Override
     // Метод обновления обычной задачи по идентификатору
-    public void updateTask(Task task, int id) {
-        task.setId(id);
+    public void updateTask(Task task) {
+        task.setId(task.getId());
         tasks.put(task.getId(), task);
     }
 
     @Override
     // Метод обновления подзадачи по идентификатору
-    public void updateSubTask(SubTask subTask, int id) {
-        subTask.setId(id);
+    public void updateSubTask(SubTask subTask) {
+        subTask.setId(subTask.getId());
         subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
-        updateEpic(epic, epic.getId());
-        /* вариант обновления №2, но поскольку для эпика есть отдельный метод, прописал отдельно
-        for (Map.Entry<Integer, SubTask> entry : subTasks.entrySet()) {
-            SubTask subTaskStatus = entry.getValue();
-            if (subTaskStatus.getStatus().equals("DONE")) {
-                epic.setStatus("DONE");
-            } else if (subTaskStatus.getStatus().equals("IN_PROGRESS") ||
-                        subTaskStatus.getStatus().equals("DONE")) {
-                epic.setStatus("IN_PROGRESS");
-            } */
-
+        updateEpic(epic);
     }
 
 

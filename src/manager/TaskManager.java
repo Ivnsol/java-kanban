@@ -59,13 +59,13 @@ public interface TaskManager {
 
 
     // Метод обновления эпика по идентификатору
-    void updateEpic(Epic epic, int id);
+    void updateEpic(Epic epic);
 
     // Метод обновления обычной задачи по идентификатору
-    void updateTask(Task task, int id);
+    void updateTask(Task task);
 
     // Метод обновления подзадачи по идентификатору
-    void updateSubTask(SubTask subTask, int id);
+    void updateSubTask(SubTask subTask);
 
     // Получение списка задач для определенного эпика
     void getTasksForEpic(int epicId);
