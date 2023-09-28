@@ -7,6 +7,9 @@ import model.Task;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.toSet;
+
+
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Epic> epics;
@@ -154,21 +157,16 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     // Метод обновления эпика по идентификатору
     public void updateEpic(Epic epic) {
-        if (!epic.getStatus().equals(Status.DONE)) {
-            boolean allSubtasksDone = true;
-            for (Integer subTasksId : epic.getSubTasksIds()) {
-                SubTask subTask = subTasks.get(subTasksId);
-                if (subTask.getStatus().equals(Status.IN_PROGRESS)) {
-                    allSubtasksDone = false;
-                    break;
+        var statuses = epic.getSubTasksIds().stream()
+                .map(subTasks::get)
+                .map(Task::getStatus)
+                .collect(toSet());
+                if (statuses.size() == 1 && statuses.equals(Status.DONE)){
+                    epic.setStatus("DONE");
+                } else if (statuses.size() > 1){
+                    epic.setStatus("IN_PROGRESS");
                 }
-            }
-            if (allSubtasksDone) {
-                epic.setStatus("DONE");
-            } else {
-                epic.setStatus("IN_PROGRESS");
-            }
-        }
+
         epics.put(epic.getId(), epic);
     }
 
