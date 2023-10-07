@@ -1,9 +1,9 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Task {
+    private Types type;
     protected String title;
     protected int id;
     protected String status;
@@ -13,6 +13,7 @@ public class Task {
         this.title = title;
         this.status = "NEW";
         this.description = description;
+        this.type = Types.TASK;
     }
 
     @Override
@@ -62,9 +63,18 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                "id='" + id + '\'' +
-                '}';
+        return  id + ", " +
+                type + ", " +
+                title + ", " +
+                status + ", " +
+                description;
     }
+
+    public Types getType() {
+        return type;
+    }
+    public void setType(Types type) {
+        this.type = type;
+    }
+
 }

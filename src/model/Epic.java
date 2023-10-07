@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private final Types type;
 
     protected ArrayList<Integer> subTasksIds = new ArrayList<>();
 
     public Epic(String title, String description) {
         super(title, description);
+        this.type = Types.EPIC;
     }
 
     @Override
@@ -36,5 +38,6 @@ public class Epic extends Task {
     public void setSubTasksIds(Integer subTasksId) {
         subTasksIds.add(subTasksId);
     }
+
 }
 

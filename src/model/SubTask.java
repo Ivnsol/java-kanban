@@ -3,11 +3,13 @@ package model;
 import java.util.Objects;
 
 public class SubTask extends Task {
+    private final Types type;
     protected int epicId;
 
     public SubTask(String title, String description, int epicId) {
         super(title,
                 description);
+        this.type = Types.SUBTASK;
         this.epicId = epicId;
     }
 
@@ -31,5 +33,15 @@ public class SubTask extends Task {
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
+    }
+
+    @Override
+    public String toString() {
+        return id + ", " +
+                type + ", " +
+                title + ", " +
+                status + ", " +
+                description + ", " +
+                epicId;
     }
 }
