@@ -10,16 +10,14 @@ import java.util.*;
 import static java.util.stream.Collectors.toSet;
 
 
-
 public class InMemoryTaskManager implements TaskManager {
-    private final Map<Integer, Epic> epics;
-    private final Map<Integer, SubTask> subTasks;
-    private final Map<Integer, Task> tasks;
-    private final HistoryManager historyManager;
-    private int nextId;
+    protected final Map<Integer, Epic> epics;
+    protected final Map<Integer, SubTask> subTasks;
+    protected final Map<Integer, Task> tasks;
+    protected final HistoryManager historyManager = new InMemoryHistoryManager();
+    protected int nextId;
 
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
+    public InMemoryTaskManager() {
         this.epics = new HashMap<>();
         this.subTasks = new HashMap<>();
         this.tasks = new HashMap<>();
