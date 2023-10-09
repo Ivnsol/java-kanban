@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
-import static manager.Managers.loadFromFile;
-
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
 
@@ -42,7 +40,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return history;
     }
 
-
     public void fromString(String string) {
         String[] split = string.split(", ");
         switch (Types.valueOf(split[1])) {
@@ -69,20 +66,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                 break;
         }
     }
-//        if (split.length == 6) {
-//            SubTask subTask = new SubTask(split[2], split[4], Integer.parseInt(split[5]));
-//            subTask.setType(Types.valueOf(split[1]));
-//            subTask.setStatus(split[3]);
-//            subTask.setId(Integer.parseInt(split[0]));
-//            return subTask;
-//        } else if{
-//            Task task = new Task(split[2], split[4]);
-//            task.setType(Types.valueOf(split[1]));
-//            task.setStatus(split[3]);
-//            task.setId(Integer.parseInt(split[0]));
-//            return task;
-//        }
-
 
     public void save() throws ManagerSaveException {//метод записи в файл
 
@@ -119,15 +102,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
             tasksFromFile.removeFirst();
             for (int i = 0; i < tasksFromFile.size() - 2; i++) {
-                fromString(tasksFromFile.get(i));//возврат тасков
-//                if (task.getType().equals(TASK)){
-//                    tasks.put(task.getId(), task);
-//                }else if (task.getType().equals(SUBTASK)) {
-//                    tasks.put(task.getId(), task);
-//                }else if (task.getType().equals(EPIC)) {
-//                    tasks.put(task.getId(), task);
-//                }
-
+                fromString(tasksFromFile.get(i));
             }
             List<Integer> hfs = historyFromString(tasksFromFile.getLast());//возврат истории просмотров
             for (Integer hf : hfs) {
@@ -252,12 +227,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return subTask;
     }
 
+
     //---------------------------------------------------------------------------------
     public static void main(String[] args) {
         System.out.println("Поехали!");
 
-        File file = new File("example.txt");
-        System.out.println(loadFromFile(file).getAllSubTask());
         TaskManager manager = Managers.getDefault();
 
         System.out.println(manager.printHistory());

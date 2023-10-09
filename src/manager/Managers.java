@@ -4,8 +4,9 @@ import java.io.File;
 
 public class Managers {
     public static TaskManager getDefault() {
-
-        return new InMemoryTaskManager();
+        File file = new File("example.txt");
+        InMemoryTaskManager memory = loadFromFile(file);
+        return memory;
     }
 
     public static HistoryManager getDefaultHistory() {
@@ -17,11 +18,6 @@ public class Managers {
         manager.fileReader();
         return manager;
     }
-//    public static TaskManager getDefaultFileManager() {
-//        HistoryManager historyManager = getDefaultHistory();
-//        File file = new File();
-//        return new FileBackedTasksManager(historyManager);
-//    }
 
 }
 
