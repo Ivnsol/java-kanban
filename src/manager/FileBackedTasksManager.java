@@ -40,31 +40,99 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return history;
     }
 
-    public void fromString(String string) {
+
+//    public void fromString(String string) {
+//        String[] split = string.split(", ");
+//        switch (Types.valueOf(split[1])) {
+//            case SUBTASK:
+//                SubTask subTask = new SubTask(split[2], split[4], Integer.parseInt(split[5]));
+//                subTask.setType(Types.valueOf(split[1]));
+//                subTask.setStatus(split[3]);
+//                subTask.setId(Integer.parseInt(split[0]));
+//                subTasks.put(subTask.getId(), subTask);
+//                break;
+//            case EPIC:
+//                Epic epic = new Epic(split[2], split[4]);
+//                epic.setType(Types.valueOf(split[1]));
+//                epic.setStatus(split[3]);
+//                epic.setId(Integer.parseInt(split[0]));
+//                epics.put(epic.getId(), epic);
+//                break;
+//            case TASK:
+//                Task task = new Task(split[2], split[4]);
+//                task.setType(Types.valueOf(split[1]));
+//                task.setStatus(split[3]);
+//                task.setId(Integer.parseInt(split[0]));
+//                tasks.put(task.getId(), task);
+//                break;
+//        }
+//    }
+
+    //---------------------------------------------------------------------------------
+    public static void main(String[] args) {
+        System.out.println("Поехали!");
+
+
+      TaskManager manager = Managers.getDefault();
+//        Epic epic1 = new Epic("epicName1", "epicDis1");
+//        manager.addEpic(epic1);
+//
+//
+//        Epic epic2 = new Epic("epicName2", "epicDis2");
+//        manager.addEpic(epic2);
+//
+//
+//        Task task3 = new Task("taskName3", "taskDis3");
+//        manager.addTask(task3);
+//
+//        Task task4 = new Task("taskName4", "taskDis4");
+//        manager.addTask(task4);
+//
+//
+//        SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1);
+//        manager.addSubTask(subTask5);
+//        SubTask subTask6 = new SubTask("subTaskName6", "subTaskDis", 1);
+//        manager.addSubTask(subTask6);
+//        SubTask subTask7 = new SubTask("subTaskName7", "subTaskDis", 1);
+//        manager.addSubTask(subTask7);
+//        manager.getTaskByIdForEpic(epic1.getId());
+//        manager.getTaskByIdForEpic(epic2.getId());
+//        manager.getTaskByIdForTask(task3.getId());
+//        manager.getTaskByIdForTask(task4.getId());
+//        manager.getTaskByIdForSubTask(subTask5.getId());
+//        manager.getTaskByIdForSubTask(subTask6.getId());
+//        manager.getTaskByIdForSubTask(subTask7.getId());
+        File file = null;
+        file = new File("example.txt");
+        FileBackedTasksManager files = new FileBackedTasksManager(file);
+        files.fileReader();
+        System.out.println(files.printHistory());
+
+
+
+    }
+    public static FileBackedTasksManager loadFromFile(File file){
+        FileBackedTasksManager read = new FileBackedTasksManager(file);
+        read.fileReader();
+        return read;
+    }
+    public Task fromString(String string) {
         String[] split = string.split(", ");
-        switch (Types.valueOf(split[1])) {
-            case SUBTASK:
-                SubTask subTask = new SubTask(split[2], split[4], Integer.parseInt(split[5]));
-                subTask.setType(Types.valueOf(split[1]));
-                subTask.setStatus(split[3]);
-                subTask.setId(Integer.parseInt(split[0]));
-                subTasks.put(subTask.getId(), subTask);
-                break;
-            case EPIC:
-                Epic epic = new Epic(split[2], split[4]);
-                epic.setType(Types.valueOf(split[1]));
-                epic.setStatus(split[3]);
-                epic.setId(Integer.parseInt(split[0]));
-                epics.put(epic.getId(), epic);
-                break;
-            case TASK:
-                Task task = new Task(split[2], split[4]);
-                task.setType(Types.valueOf(split[1]));
-                task.setStatus(split[3]);
-                task.setId(Integer.parseInt(split[0]));
-                tasks.put(task.getId(), task);
-                break;
+
+        if (split.length == 6) {
+            SubTask subTask = new SubTask(split[2], split[4], Integer.parseInt(split[5]));
+            subTask.setType(Types.valueOf(split[1]));
+            subTask.setStatus(split[3]);
+            subTask.setId(Integer.parseInt(split[0]));
+            return subTask;
+        } else {
+            Task task = new Task(split[2], split[4]);
+            task.setType(Types.valueOf(split[1]));
+            task.setStatus(split[3]);
+            task.setId(Integer.parseInt(split[0]));
+            return task;
         }
+
     }
 
     public void save() throws ManagerSaveException {//метод записи в файл
@@ -102,7 +170,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             }
             tasksFromFile.removeFirst();
             for (int i = 0; i < tasksFromFile.size() - 2; i++) {
-                fromString(tasksFromFile.get(i));
+                Task task = fromString(tasksFromFile.get(i));
+                switch (task.getType()) {
+                    case SUBTASK:
+                        subTasks.put(task.getId(), (SubTask) task);
+                        break;
+                    case EPIC:
+                        epics.put(task.getId(), (Epic) task);
+                        break;
+                    case TASK:
+                        tasks.put(task.getId(), task);
+                        break;
+                }
             }
             List<Integer> hfs = historyFromString(tasksFromFile.getLast());//возврат истории просмотров
             for (Integer hf : hfs) {
@@ -226,45 +305,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         save();
         return subTask;
     }
-
-
-    //---------------------------------------------------------------------------------
-    public static void main(String[] args) {
-        System.out.println("Поехали!");
-
-        TaskManager manager = Managers.getDefault();
-
-        System.out.println(manager.printHistory());
-    }
 }
 
-//        Epic epic1 = new Epic("epicName1", "epicDis1");
-//        manager.addEpic(epic1);
-//
-//
-//        Epic epic2 = new Epic("epicName2", "epicDis2");
-//        manager.addEpic(epic2);
-//
-//
-//        Task task3 = new Task("taskName3", "taskDis3");
-//        manager.addTask(task3);
-//
-//        Task task4 = new Task("taskName4", "taskDis4");
-//        manager.addTask(task4);
-//
-//
-//        SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1);
-//        manager.addSubTask(subTask5);
-//        SubTask subTask6 = new SubTask("subTaskName6", "subTaskDis", 1);
-//        manager.addSubTask(subTask6);
-//        SubTask subTask7 = new SubTask("subTaskName7", "subTaskDis", 1);
-//        manager.addSubTask(subTask7);
-//
-//        manager.getTaskByIdForEpic(epic1.getId());
-//        manager.getTaskByIdForEpic(epic2.getId());
-//        manager.getTaskByIdForTask(task3.getId());
-//        manager.getTaskByIdForTask(task4.getId());
-//        manager.getTaskByIdForSubTask(subTask5.getId());
-//        manager.getTaskByIdForSubTask(subTask6.getId());
-//        manager.getTaskByIdForSubTask(subTask7.getId());
 
