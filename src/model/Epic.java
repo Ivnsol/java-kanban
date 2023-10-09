@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private final Types type;
+    protected Types type;
 
     protected ArrayList<Integer> subTasksIds = new ArrayList<>();
 

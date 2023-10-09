@@ -3,14 +3,14 @@ package model;
 import java.util.Objects;
 
 public class SubTask extends Task {
-    private final Types type;
+    protected Types type;
     protected int epicId;
 
     public SubTask(String title, String description, int epicId) {
         super(title,
                 description);
-        this.type = Types.SUBTASK;
         this.epicId = epicId;
+        this.type = Types.SUBTASK;
     }
 
     @Override
