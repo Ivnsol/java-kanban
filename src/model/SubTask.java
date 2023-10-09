@@ -3,7 +3,6 @@ package model;
 import java.util.Objects;
 
 public class SubTask extends Task {
-    protected Types type;
     protected int epicId;
 
     public SubTask(String title, String description, int epicId) {
