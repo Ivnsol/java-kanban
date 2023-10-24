@@ -10,7 +10,7 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Поехали!");
+       /* System.out.println("Поехали!");
 
         TaskManager manager = Managers.getDefault();
 
@@ -107,7 +107,7 @@ public class Main {
         System.out.println("Должен вывести историю id 7-1");
         manager.removeAllSubTask();
         manager.removeAllTask();
-        manager.removeAllTasksForEpic();
+        manager.removeAllTasksForEpic();*/
     }
 }
 

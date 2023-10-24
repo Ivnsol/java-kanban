@@ -10,7 +10,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private final CustomLinkedLists history = new CustomLinkedLists();
 
-
     @Override
     public void add(Task task) {
         history.linkLast(task);

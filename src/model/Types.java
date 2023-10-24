@@ -4,5 +4,4 @@ public enum Types {
     EPIC,
     SUBTASK,
     TASK
-
 }
