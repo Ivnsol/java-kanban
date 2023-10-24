@@ -1,17 +1,21 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
     protected ArrayList<Integer> subTasksIds = new ArrayList<>();
+    protected LocalDateTime endTime;
 
-    public Epic(String title, String description) {
-        super(title, description);
+    public Epic(String title, String description,LocalDateTime startTime,int duration) {
+        super(title,
+                 description,
+                startTime,
+                duration);
         this.type = Types.EPIC;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,6 +29,15 @@ public class Epic extends Task {
         return Objects.hash(subTasksIds);
     }
 
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+            return endTime;
+    }
+
     public ArrayList<Integer> getSubTasksIds() {
         return subTasksIds;
     }
@@ -32,7 +45,6 @@ public class Epic extends Task {
     public void deleteSubTasksFromEpic(int id) {
         subTasksIds.remove(Integer.valueOf(id));
     }
-
 
     public void setSubTasksIds(Integer subTasksId) {
         subTasksIds.add(subTasksId);

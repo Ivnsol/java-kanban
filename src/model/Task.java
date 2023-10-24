@@ -1,19 +1,26 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
+    protected LocalDateTime startTime;
+    protected Duration duration;
     protected Types type;
     protected String title;
     protected int id;
     protected String status;
     protected String description;
     
-    public Task(String title, String description) {
+    public Task(String title, String description,LocalDateTime startTime,int duration) {
         this.title = title;
         this.status = "NEW";
         this.description = description;
         this.type = Types.TASK;
+        this.startTime = startTime;
+        this.duration = Duration.ofSeconds(duration);
     }
 
     @Override
@@ -27,6 +34,26 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(title, id, status, description);
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 
     public String getTitle() {
@@ -61,13 +88,17 @@ public class Task {
         this.description = description;
     }
 
+
     @Override
     public String toString() {
         return  id + ", " +
                 type + ", " +
                 title + ", " +
                 status + ", " +
-                description;
+                description + ", " +
+                (startTime != null ? startTime.format(DateTimeFormatter.ofPattern("yyy.MM.dd HH:mm")):
+                        "null") + ", " +
+                (duration != null ? duration.toSeconds() : "null");
     }
 
     public Types getType() {
