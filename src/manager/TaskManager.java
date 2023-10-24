@@ -6,6 +6,7 @@ import model.Task;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 
 public interface TaskManager {
@@ -67,10 +68,10 @@ public interface TaskManager {
     // Метод обновления подзадачи по идентификатору
     void updateSubTask(SubTask subTask);
 
-    // Получение списка задач для определенного эпика
-    void getTasksForEpic(int epicId);
+    TreeSet<Task> getPrioritizedTasks();
 
-    void printEpicTask();
+    // Получение списка задач для определенного эпика
+    List<SubTask> getTasksForEpic(int epicId);
 
     List<Task> printHistory();
 }
