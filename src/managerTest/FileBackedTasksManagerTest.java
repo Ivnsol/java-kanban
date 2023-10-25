@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
@@ -24,11 +25,11 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.getTaskByIdForTask(4);
         taskManager.save();
         taskManager.fileReader();
-
-        assertEquals(2, taskManager.getAllTask().size());
-        assertEquals(3, taskManager.getAllSubTask().size());
-        assertEquals(2, taskManager.getAllEpic().size());
-        assertEquals(2, taskManager.printHistory().size());
+        assertAll(
+                () -> assertEquals(2, taskManager.getAllTask().size()),
+                () -> assertEquals(3, taskManager.getAllSubTask().size()),
+                () -> assertEquals(2, taskManager.getAllEpic().size()),
+                () -> assertEquals(2, taskManager.printHistory().size()));
     }
 
     @Test
@@ -55,9 +56,10 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.save();
         taskManager.fileReader();
 
-        assertEquals(2, taskManager.getAllTask().size());
-        assertEquals(0, taskManager.getAllSubTask().size());
-        assertEquals(2, taskManager.getAllEpic().size());
-        assertEquals(2, taskManager.printHistory().size());
+        assertAll(
+                () -> assertEquals(2, taskManager.getAllTask().size()),
+                () -> assertEquals(0, taskManager.getAllSubTask().size()),
+                () -> assertEquals(2, taskManager.getAllEpic().size()),
+                () -> assertEquals(0, taskManager.printHistory().size()));
     }
 }
