@@ -33,7 +33,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         return sj.toString();
     }
 
-    public static List<Integer> historyFromString(String value) { //подумать где вызвать метод!
+    public static List<Integer> historyFromString(String value) {
         List<Integer> history = new LinkedList<>();
         String[] s = value.split(", ");
         for (String s1 : s) {
@@ -147,7 +147,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             saveTasks(writer, epics);
             saveTasks(writer, tasks);
             saveTasks(writer, subTasks);
-            if (historyToString(historyManager).isEmpty()) writer.write("\n" + historyToString(historyManager));
+            writer.write("\n" + historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка, файла не существует");
         }
@@ -159,7 +159,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             writer.write(task.toString() + "\n");
         }
     }
-//TODO нужна ли такая логика в ридере? или подумать над save
+
+    //TODO нужна ли такая логика в ридере? или подумать над save
     public void fileReader() throws RuntimeException {
         LinkedList<String> tasksFromFile = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -175,8 +176,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                         tasksToMap(task);
                     }
                 }
-                List<Integer> history = historyFromString(tasksFromFile.getLast());//возврат истории просмотров
-                if (history.size() > 1) {
+                if (!tasksFromFile.getLast().equals("")) {
+                    List<Integer> history = historyFromString(tasksFromFile.getLast());//возврат истории просмотров
                     for (Integer historyId : history) {
                         historyBack(historyId);
                     }
