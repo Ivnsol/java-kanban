@@ -1,7 +1,6 @@
 package manager;
 
 import model.Epic;
-import model.Status;
 import model.SubTask;
 import model.Task;
 
@@ -173,46 +172,28 @@ public class InMemoryTaskManager implements TaskManager {
     //TODO: разбить метод
     public void updateEpic(Epic epic) {
         //chage for status
-        var statuses = epic.getSubTasksIds().stream()
-                .map(subTasks::get)
-                .map(Task::getStatus)
-                .collect(toSet());
-        if (statuses.size() == 1) {
-            String statusesAsString = statuses.iterator().next().toString();
-            epic.setStatus(statusesAsString);
-        } else if (statuses.isEmpty()) {
-            epic.setStatus("NEW");
-        } else {
-            epic.setStatus("IN_PROGRESS");
-        }
+        checkEpicStatus(epic);
 
         //start time
-        Optional<LocalDateTime> startTimeForEpic = epic.getSubTasksIds().stream()
-                .map(subTasks::get)
-                .map(Task::getStartTime)
-                .min(LocalDateTime::compareTo);
-        if (startTimeForEpic.isPresent()) {
+        LocalDateTime startTimeForEpic = checkEpicStartTime(epic);
+        if (startTimeForEpic != null) {
 
             // duration time
-            Optional<Duration> durationForEpic = Optional.of(epic.getSubTasksIds().stream()
-                    .map(subTasks::get)
-                    .map(Task::getDuration)
-                    .reduce(Duration::plus)
-                    .orElse(Duration.ZERO));
+            Duration durationForEpic = checkDurationForEpic(epic);
 
-            LocalDateTime timeForCheck = startTimeForEpic.get().plus(durationForEpic.get());
+            LocalDateTime timeForCheck = startTimeForEpic.plus(durationForEpic);
             // end time
-            if (startTimeForEpic.isPresent()) {
-                LocalDateTime subEndTime = LocalDateTime.MIN;
-                Duration subDurationForEnd = Duration.ZERO;
+                LocalDateTime subEndTime = null;
+                Duration subDurationForEnd = null;
                 for (Integer subTasksId : epic.getSubTasksIds()) {
                     SubTask sub = subTasks.get(subTasksId);
-                    if (subEndTime.isBefore(sub.getEndTime())) {
+                    if (subEndTime == null ||
+                            sub.getEndTime() != null && subEndTime.isBefore(sub.getEndTime())) {
                         subEndTime = sub.getEndTime();
                         subDurationForEnd = sub.getDuration();
                     }
                 }
-                if (subEndTime.plus(subDurationForEnd).isBefore(timeForCheck)) {
+                if (subEndTime.plus(subDurationForEnd).isAfter(timeForCheck)) {
                     epic.setEndTime(subEndTime);
                     epic.setDuration(subDurationForEnd);
                 } else {
@@ -220,8 +201,40 @@ public class InMemoryTaskManager implements TaskManager {
                     epic.setDuration(subDurationForEnd);
                 }
             }
-        }
+
         epics.put(epic.getId(), epic);
+    }
+
+    private Duration checkDurationForEpic(Epic epic) {
+        return epic.getSubTasksIds().stream()
+                .map(subTasks::get)
+                .map(Task::getDuration)
+                .reduce(Duration::plus)
+                .orElse(Duration.ZERO);
+    }
+
+    private LocalDateTime checkEpicStartTime(Epic epic) {
+        Optional<LocalDateTime> startTimeForEpic = epic.getSubTasksIds().stream()
+                .map(subTasks::get)
+                .map(Task::getStartTime)
+                .filter(Objects::nonNull)
+                .min(LocalDateTime::compareTo);
+        return startTimeForEpic.orElse(null);
+    }
+
+    private void checkEpicStatus(Epic epic) {
+        var statuses = epic.getSubTasksIds().stream()
+                .map(subTasks::get)
+                .map(Task::getStatus)
+                .collect(toSet());
+        if (statuses.size() == 1) {
+            String statusesAsString = statuses.iterator().next();
+            epic.setStatus(statusesAsString);
+        } else if (statuses.isEmpty()) {
+            epic.setStatus("NEW");
+        } else {
+            epic.setStatus("IN_PROGRESS");
+        }
     }
 
     @Override
@@ -271,33 +284,36 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public TreeSet<Task> getPrioritizedTasks() {
-        TreeSet<Task> prioritizedTasks = new TreeSet<>((task1, task2) -> {
+    public Set<Task> getPrioritizedTasks() {
+        List<Task> allTasks = new ArrayList<>();
+        allTasks.addAll(tasks.values());
+        allTasks.addAll(subTasks.values());
+
+        allTasks.sort((task1, task2) -> {
             LocalDateTime dateTime1 = task1.getStartTime();
             LocalDateTime dateTime2 = task2.getStartTime();
 
-            if (dateTime1.equals(dateTime2)) {
+            if (dateTime1 == null && dateTime2 == null) {
                 return 0; // Элементы равны
-            } else if (dateTime1.equals(LocalDateTime.of(0, 1, 1, 0, 0))) {
+            } else if (dateTime1 == null) {
                 return 1; // Элемент dateTime1 - "0", должен идти в конце
-            } else if (dateTime2.equals(LocalDateTime.of(0, 1, 1, 0, 0))) {
+            } else if (dateTime2 == null) {
                 return -1; // Элемент dateTime2 - "0", должен идти в конце
             } else {
                 return dateTime1.compareTo(dateTime2); // Сравниваем по умолчанию
             }
         });
-        //take startTime from Task
-        prioritizedTasks.addAll(tasks.values());
-        //take startTime from subTask
-        prioritizedTasks.addAll(subTasks.values());
 
-        return prioritizedTasks;
+        return new LinkedHashSet<>(allTasks);
     }
 
+
     public void checkTasksSameStartTime(Task task) {
-        TreeSet<Task> prioritizedTasks = getPrioritizedTasks(); //update Set of tasks
-        Optional<Task> check = prioritizedTasks.stream()
-                .filter(t -> t.getStartTime().equals(task.getStartTime()))
+        Optional<Task> check = getPrioritizedTasks().stream()
+                .filter(t -> {
+                    LocalDateTime startTime = t.getStartTime();
+                    return startTime != null && startTime.equals(task.getStartTime());
+                })
                 .findFirst();
 
         if (check.isPresent()) {
