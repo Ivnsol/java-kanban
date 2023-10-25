@@ -1,5 +1,6 @@
-package manager;
+package managerTest;
 
+import manager.TaskManager;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -10,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
@@ -82,7 +83,20 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void removeEpicById() {
+        //find epic id1 and check Collections before delete
+        Collection<SubTask> subTasksBeforeDelete = taskManager.getAllSubTask();
+        Collection<Epic> epicsBeforeDelete = taskManager.getAllEpic();
+        Optional<Epic> epic = Optional.ofNullable((Epic) taskManager.getTaskByIdForEpic(1));
+        assertEquals(3, subTasksBeforeDelete.size());
+        assertEquals(2, epicsBeforeDelete.size());
+        assertTrue(epic.isPresent());
+
+        //throws NullPointerException after delete and check collections
         taskManager.removeEpicById(1);
+
+        assertThrows(NullPointerException.class,
+                () -> taskManager.getTaskByIdForEpic(1));
+
         Collection<SubTask> subTasks = taskManager.getAllSubTask();
         Collection<Epic> epics = taskManager.getAllEpic();
         assertEquals(0, subTasks.size());
@@ -252,7 +266,15 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void getPrioritizedTasks() {
-        assertEquals(5, taskManager.getPrioritizedTasks().size());
+        SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1, null, 0);
+        // Вызов метода updateTask
+        taskManager.addSubTask(subTask5);
+        SubTask subTask9 = new SubTask("subTaskName555", "subTaskDis", 1, null, 0);
+        // Вызов метода updateTask
+        taskManager.addSubTask(subTask9);
+
+        assertEquals(7, taskManager.getPrioritizedTasks().size());
+
     }
 
     @Test

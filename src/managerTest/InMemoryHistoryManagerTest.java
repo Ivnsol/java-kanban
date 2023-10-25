@@ -1,5 +1,6 @@
-package manager;
+package managerTest;
 
+import manager.InMemoryHistoryManager;
 import model.Epic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,6 +61,8 @@ class InMemoryHistoryManagerTest{
 
     @Test
     void zeroHistoryTest() {
+        assertEquals(3, manager.getHistory().size());
+
         manager.remove(1);
         manager.remove(2);
         manager.remove(3);

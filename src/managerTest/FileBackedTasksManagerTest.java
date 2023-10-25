@@ -1,5 +1,6 @@
-package manager;
+package managerTest;
 
+import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -35,7 +36,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
         taskManager.removeAllTask();
         taskManager.removeAllSubTask();
         taskManager.removeAllTasksForEpic();
-        taskManager.historyManager.getHistory().clear();
+        taskManager.printHistory().clear();
 
         taskManager.save();
         taskManager.fileReader();

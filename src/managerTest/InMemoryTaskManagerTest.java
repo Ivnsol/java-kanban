@@ -1,6 +1,6 @@
-package manager;
+package managerTest;
 
-import java.io.File;
+import manager.InMemoryTaskManager;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
@@ -8,5 +8,6 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         super();
         taskManager = new InMemoryTaskManager(); // Инициализация объекта taskManager
     }
+
 }
 
