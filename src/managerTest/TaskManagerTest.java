@@ -49,40 +49,40 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getAllTask() {
+    void getAllTaskTest() {
         Collection<Task> tasks = taskManager.getAllTask();
         assertEquals(2, tasks.size());
     }
 
     @Test
-    void getAllSubTask() {
+    void getAllSubTaskTest() {
         Collection<SubTask> subTasks = taskManager.getAllSubTask();
         assertEquals(3, subTasks.size());
     }
 
     @Test
-    void removeAllTasksForEpic() {
+    void removeAllTasksForEpicTest() {
         taskManager.removeAllTasksForEpic();
         Collection<Epic> epicList = taskManager.getAllEpic();
         assertTrue(epicList.isEmpty());
     }
 
     @Test
-    void removeAllTask() {
+    void removeAllTaskTest() {
         taskManager.removeAllTask();
         Collection<Task> tasks = taskManager.getAllTask();
         assertTrue(tasks.isEmpty());
     }
 
     @Test
-    void removeAllSubTask() {
+    void removeAllSubTaskTest() {
         taskManager.removeAllSubTask();
         Collection<SubTask> subTasks = taskManager.getAllSubTask();
         assertTrue(subTasks.isEmpty());
     }
 
     @Test
-    void removeEpicById() {
+    void removeEpicByIdTest() {
         //find epic id1 and check Collections before delete
         Collection<SubTask> subTasksBeforeDelete = taskManager.getAllSubTask();
         Collection<Epic> epicsBeforeDelete = taskManager.getAllEpic();
@@ -104,21 +104,21 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void removeTaskById() {
+    void removeTaskByIdTest() {
         taskManager.removeTaskById(3);
         Collection<Task> tasks = taskManager.getAllTask();
         assertEquals(1, tasks.size());
     }
 
     @Test
-    void removeSubtaskId() {
+    void removeSubtaskIdTest() {
         taskManager.removeSubtaskId(6);
         Collection<SubTask> subTasks = taskManager.getAllSubTask();
         assertEquals(2, subTasks.size());
     }
 
     @Test
-    void getTaskByIdForEpic() {
+    void getTaskByIdForEpicTest() {
         taskManager.getAllEpic();
         Epic epic = (Epic) taskManager.getTaskByIdForEpic(1);
         assertEquals("1, EPIC, epicName1, NEW, epicDis1, null, 0",//may be null at the end
@@ -126,26 +126,26 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getTaskByIdForTask() {
+    void getTaskByIdForTaskTest() {
         assertEquals("3, TASK, taskName3, NEW, taskDis3, 2023.10.23 15:10, 0",//may be null at the end
                 taskManager.getTaskByIdForTask(3).toString());
     }
 
     @Test
-    void getTaskByIdForSubTask() {
+    void getTaskByIdForSubTaskTest() {
         assertEquals("3, TASK, taskName3, NEW, taskDis3, 2023.10.23 15:10, 0",//may be null at the end
                 taskManager.getTaskByIdForTask(3).toString());
     }
 
     @Test
-    void addEpic() {
+    void addEpicTest() {
         Epic epic3 = new Epic("epicName3", "epicDis3",null,0);
         taskManager.addEpic(epic3);
         assertEquals(3, taskManager.getAllEpic().size());
     }
 
     @Test
-    void addSubTask() {
+    void addSubTaskTest() {
         SubTask subTask8 = new SubTask("subTaskName8", "subTaskDis", 1, LocalDateTime.of(2023, 11, 23, 15, 14), 0);
 
         taskManager.addSubTask(subTask8);
@@ -153,7 +153,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void addTask() {
+    void addTaskTest() {
         Task task4 = new Task("taskName4", "taskDis4", LocalDateTime.of(2023, 10, 23, 16, 10), 0);
 
         taskManager.addTask(task4);
@@ -230,7 +230,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void updateTask() {
+    void updateTaskTest() {
         Task task3 = new Task("taskName3", "taskDis3", LocalDateTime.of(2024, 10, 23, 15, 10), 0);
         // Вызов метода updateTask
         taskManager.addTask(task3);
@@ -242,7 +242,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void updateSubTask() {
+    void updateSubTaskTest() {
         SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1, LocalDateTime.of(2024, 10, 23, 15, 12), 0);
         // Вызов метода updateTask
         taskManager.addSubTask(subTask5);
@@ -254,7 +254,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void CheckEpicForSubtask() {
+    void CheckEpicForSubtaskTest() {
         SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1, LocalDateTime.of(2024, 10, 23, 15, 12), 0);
         // Вызов метода updateTask
         taskManager.addSubTask(subTask5);
@@ -265,7 +265,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getPrioritizedTasks() {
+    void getPrioritizedTasksTest() {
         SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1, null, 0);
         // Вызов метода updateTask
         taskManager.addSubTask(subTask5);
@@ -278,19 +278,15 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getTasksForEpic() {
+    void getTasksForEpicTest() {
         taskManager.getTasksForEpic(1);
         assertEquals(3, taskManager.getTasksForEpic(1).size());
     }
 
     @Test
-    void printHistory() {
+    void printHistoryTest() {
         List<Task> history = taskManager.printHistory();
         assertEquals(0, history.size());
     }
 
 }
-
-/*"5, SUBTASK, subTaskName5, NEW, subTaskDis, 1, 2023.10.23 15:12, 0" + "\n" +
-                   "6, SUBTASK, subTaskName6, NEW, subTaskDis, 1, 2023.10.23 15:13, 0" + "\n" +
-                "7, SUBTASK, subTaskName7, NEW, subTaskDis, 1, 2023.10.23 15:14, 0"*/
