@@ -15,10 +15,10 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epics;
     protected final Map<Integer, SubTask> subTasks;
     protected final Map<Integer, Task> tasks;
+
     protected final HistoryManager historyManager = new InMemoryHistoryManager();
     protected int nextId;
-
-
+    protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(new TimeSortComparator());
     public InMemoryTaskManager() {
         this.epics = new HashMap<>();
         this.subTasks = new HashMap<>();
@@ -80,6 +80,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeEpicById(int epicIds) {
         Epic ep = epics.get(epicIds);
         for (Integer subTasksId : ep.getSubTasksIds()) {
+            prioritizedTasks.remove(subTasks.get(subTasksId));
             subTasks.remove(subTasksId);
             historyManager.remove(subTasksId);
         }
@@ -90,6 +91,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTaskById(int taskId) {
+        prioritizedTasks.remove(tasks.get(taskId));
         tasks.remove(taskId);
         historyManager.remove(taskId);
     }
@@ -99,6 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic ep = epics.get(subTasks.get(subTaskId).getEpicId());
         ep.deleteSubTasksFromEpic(subTaskId);
         historyManager.remove(subTaskId);
+        prioritizedTasks.remove(subTasks.get(subTaskId));
         subTasks.remove(subTaskId);
         updateEpic(ep);
     }
@@ -147,6 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         subTasks.put(subTask.getId(), subTask);
+        prioritizedTasks.add(subTask);
         Epic epic = epics.get(subTask.getEpicId());
         epic.setSubTasksIds(subTask.getId());
         updateEpic(epic);
@@ -164,14 +168,14 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         tasks.put(task.getId(), task);
+        prioritizedTasks.add(task);
         nextId++;
     }
 
     @Override
     // Метод обновления эпика по идентификатору
-    //TODO: разбить метод
     public void updateEpic(Epic epic) {
-        //chage for status
+        //change for status
         checkEpicStatus(epic);
 
         //start time
@@ -247,7 +251,9 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println(e.getMessage());
             return;
         }
+        prioritizedTasks.remove(tasks.get(task.getId()));
         tasks.put(task.getId(), task);
+        prioritizedTasks.add(task);
     }
 
     @Override
@@ -260,9 +266,16 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println(e.getMessage());
             return;
         }
+        prioritizedTasks.remove(subTasks.get(subTask.getId()));
         subTasks.put(subTask.getId(), subTask);
+        prioritizedTasks.add(subTask);
         Epic epic = epics.get(subTask.getEpicId());
         updateEpic(epic);
+    }
+
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
     }
 
 
@@ -281,30 +294,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> printHistory() {
         return historyManager.getHistory();
-    }
-
-    @Override
-    public Set<Task> getPrioritizedTasks() {
-        List<Task> allTasks = new ArrayList<>();
-        allTasks.addAll(tasks.values());
-        allTasks.addAll(subTasks.values());
-
-        allTasks.sort((task1, task2) -> {
-            LocalDateTime dateTime1 = task1.getStartTime();
-            LocalDateTime dateTime2 = task2.getStartTime();
-
-            if (dateTime1 == null && dateTime2 == null) {
-                return 0; // Элементы равны
-            } else if (dateTime1 == null) {
-                return 1; // Элемент dateTime1 - "0", должен идти в конце
-            } else if (dateTime2 == null) {
-                return -1; // Элемент dateTime2 - "0", должен идти в конце
-            } else {
-                return dateTime1.compareTo(dateTime2); // Сравниваем по умолчанию
-            }
-        });
-
-        return new LinkedHashSet<>(allTasks);
     }
 
 
