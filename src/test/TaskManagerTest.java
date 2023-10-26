@@ -1,4 +1,4 @@
-package managerTest;
+package test;
 
 import manager.TaskManager;
 import model.Epic;
@@ -267,13 +267,16 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void getPrioritizedTasksTest() {
         SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", 1, null, 0);
-        // Вызов метода updateTask
         taskManager.addSubTask(subTask5);
+
         SubTask subTask9 = new SubTask("subTaskName555", "subTaskDis", 1, null, 0);
-        // Вызов метода updateTask
         taskManager.addSubTask(subTask9);
 
-        assertEquals(7, taskManager.getPrioritizedTasks().size());
+        SubTask subTask10 = new SubTask("222", "subTaskDis", 1, null, 0);
+        taskManager.addSubTask(subTask10);
+
+        System.out.println(taskManager.getPrioritizedTasks());
+        assertEquals(8, taskManager.getPrioritizedTasks().size());
 
     }
 

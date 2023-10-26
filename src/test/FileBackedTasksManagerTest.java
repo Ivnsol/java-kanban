@@ -1,4 +1,4 @@
-package managerTest;
+package test;
 
 import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.Test;
