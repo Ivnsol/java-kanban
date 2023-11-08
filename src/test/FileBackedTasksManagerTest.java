@@ -4,7 +4,6 @@ import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -16,7 +15,7 @@ public class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksM
 
     public FileBackedTasksManagerTest() {
         super();
-        taskManager = new FileBackedTasksManager(new File("example.txt")); // Инициализация объекта taskManager
+        taskManager = new FileBackedTasksManager("example.txt"); // Инициализация объекта taskManager
     }
 
     @Test
