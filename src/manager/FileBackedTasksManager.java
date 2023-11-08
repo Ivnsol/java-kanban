@@ -16,16 +16,16 @@ import java.util.StringJoiner;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
 
-    final String FIRST_STRING = "id,type,name,status,description,epic\n";
+    protected final String FIRST_STRING = "id,type,name,status,description,epic\n";
     private final File file;
 
-    public FileBackedTasksManager(File file) {
+    public FileBackedTasksManager(String file) {
         super();
-        this.file = file;
+        this.file = new File(file);
     }
 
 
-    public static String historyToString(HistoryManager manager) { //подумать где вызвать метод!
+    public static String historyToString(HistoryManager manager) {
         StringJoiner sj = new StringJoiner(", ");
         for (Task task : manager.getHistory()) {
             sj.add(String.valueOf(task.getId()));
@@ -71,42 +71,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 //    }
 
     //---------------------------------------------------------------------------------
-    public static void main(String[] args) {
-        System.out.println("Поехали!");
 
 
-        TaskManager manager = Managers.getDefault();
-        Epic epic1 = new Epic("epicName1", "epicDis1", null, 0);
-        manager.addEpic(epic1);
-
-
-        Epic epic2 = new Epic("epicName2", "epicDis2", null, 0);
-        manager.addEpic(epic2);
-
-
-        Task task3 = new Task("taskName3", "taskDis3", LocalDateTime.now(), 0);
-        manager.addTask(task3);
-
-        Task task4 = new Task("taskName4", "taskDis4", LocalDateTime.now(), 0);
-        manager.addTask(task4);
-
-
-//        SubTask subTask5 = new SubTask("subTaskName5", "subTaskDis", LocalDateTime.now(), Duration.ZERO);
-//        manager.addSubTask(subTask5);
-//        SubTask subTask6 = new SubTask("subTaskName6", "subTaskDis", LocalDateTime.now(), Duration.ZERO);
-//        manager.addSubTask(subTask6);
-//        SubTask subTask7 = new SubTask("subTaskName7", "subTaskDis", LocalDateTime.now(), Duration.ZERO);
-//        manager.addSubTask(subTask7);
-       /* File file = null;
-        file = new File("example.txt");
-        FileBackedTasksManager files = new FileBackedTasksManager(file);
-        files.fileReader();
-        System.out.println(files.printHistory()); */
-
-
-    }
-
-    public static FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(String file) {
         FileBackedTasksManager read = new FileBackedTasksManager(file);
         read.fileReader();
         return read;
@@ -151,10 +118,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка, файла не существует");
         }
-
     }
 
-    private void saveTasks(BufferedWriter writer, Map<Integer, ? extends Task> taskMap) throws IOException {
+    protected void saveTasks(BufferedWriter writer, Map<Integer, ? extends Task> taskMap) throws IOException {
         for (Task task : taskMap.values()) {
             writer.write(task.toString() + "\n");
         }
