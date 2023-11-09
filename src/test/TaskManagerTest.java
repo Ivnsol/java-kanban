@@ -36,11 +36,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addSubTask(subTask7);
     }
 
-    @AfterEach
-    public void cleanup() {
-        taskManager.removeAllTasksForEpic();
-        taskManager.removeAllTask();
-    }
+//    @AfterEach
+//    public void cleanup() {
+//        taskManager.removeAllTasksForEpic();
+//        taskManager.removeAllTask();
+//    }
 
     @Test
     void getAllEpicTest() {
