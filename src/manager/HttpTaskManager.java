@@ -2,12 +2,17 @@ package manager;
 
 import KVServer.KVTaskClient;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import http.LocalDateTimeAdapter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 public class HttpTaskManager extends FileBackedTasksManager {
-    Gson gson = new Gson();
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
     private final KVTaskClient kvTaskClient;
 
     public HttpTaskManager(String serverUrl) throws IOException {
@@ -37,3 +42,4 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
     }
 }
+

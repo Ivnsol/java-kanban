@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Managers {
-    private static final String SERVER_NAME = "http://localhost:8078/";
+    private static final String SERVER_NAME = "http://localhost:8078";
     public static TaskManager getDefault() {
         try {
             return new HttpTaskManager(SERVER_NAME);
