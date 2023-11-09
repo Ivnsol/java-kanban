@@ -50,12 +50,13 @@ public class HttpTaskServer {
             server.createContext("/tasks", new PriorityTasksHandler());
 
             server.start();
-            System.out.println(taskManager.getPrioritizedTasks());
 
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
+            System.out.println("Сервер не запускается");
         }
     }
+
     static class EpicSubtasks implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
